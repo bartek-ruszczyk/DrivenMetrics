@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Driven.Metrics.Metrics;
 using Mono.Cecil;
+using PostSharp.Sdk.CodeModel;
+
 
 namespace Driven.Metrics.metrics
 {
@@ -8,6 +10,9 @@ namespace Driven.Metrics.metrics
     {
         int MaxPassValue {get;}
 		MetricResult Calculate(IEnumerable<TypeDefinition> types);
+        MetricResult Calculate(IEnumerable<TypeDefDeclaration> types);
         MethodResult Calculate(MethodDefinition methodDefinition);
+        MethodResult Calculate(MethodDefinition methodDefinition, TypeDefinition type);
+
     }
 }

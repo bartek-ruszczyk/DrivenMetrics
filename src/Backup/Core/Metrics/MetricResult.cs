@@ -21,19 +21,11 @@ namespace Driven.Metrics.Metrics
     {
         public string Name {get; private set;}
         public IList<MethodResult> MethodResults {get; private set;}
-        public int ClassResult;
-
-
+		
         public ClassResult(string name, IList<MethodResult> methodResults)
         {
             Name = name;
             MethodResults = methodResults; 
-        }
-
-        public ClassResult(string name, int result)
-        {
-            Name = name;
-            ClassResult = result;
         }
 		
     }

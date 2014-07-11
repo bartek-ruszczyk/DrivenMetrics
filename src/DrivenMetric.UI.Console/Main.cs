@@ -23,6 +23,9 @@ namespace Driven.Metric.UI.Console
                                         { "loc=", "Calculate Lines of Code Metric with {maximum} lines of code",
                                             (int v) => consoleArgument.Metrics.Add(new NumberOfLinesCalculator(v))
                                             },
+                                         { "dit=", "Calculate Depth of Inheritance Metric",
+                                            (int v) => consoleArgument.Metrics.Add(new DepthOfInheritance())
+                                            },
                                         {"rAll=", "Generate report for all methods",v =>
                                                                                        {
                                                                                            consoleArgument.

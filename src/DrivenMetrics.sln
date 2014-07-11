@@ -1,6 +1,10 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DCB02836-C734-4601-BF78-99961B465974}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivenMetrics", "Core\DrivenMetrics.csproj", "{E25161E9-6DEF-400D-9882-B99D8A7C36C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivenMetrics.Tests", "DrivenMetrics.Tests\DrivenMetrics.Tests.csproj", "{56DA1F04-E691-46E9-8823-2EA5B3CF2A28}"
@@ -13,8 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Cecil.Extensions", "Mono.Cecil.Extensions\Mono.Cecil.Extensions.csproj", "{2D970FBC-977C-4B5E-B347-2DF0F92E3BEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrivenMetric.UI.Console", "DrivenMetric.UI.Console\DrivenMetric.UI.Console.csproj", "{2A7BCA06-785B-4F2D-93D0-D9417D1F7691}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DCB02836-C734-4601-BF78-99961B465974}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
