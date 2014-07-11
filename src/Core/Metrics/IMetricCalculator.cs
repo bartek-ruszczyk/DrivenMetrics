@@ -10,8 +10,6 @@ namespace Driven.Metrics.metrics
     {
         int MaxPassValue {get;}
 		MetricResult Calculate(IEnumerable<TypeDefinition> types);
-        MetricResult Calculate(IEnumerable<TypeDefDeclaration> types);
-        MethodResult Calculate(MethodDefinition methodDefinition);
         MethodResult Calculate(MethodDefinition methodDefinition, TypeDefinition type);
 
     }

@@ -24,7 +24,7 @@ namespace Driven.Metrics.Tests.Core.Metrics
         {
             var method = _assemblySearcher.FindMethod("First");
             var lineCalculator = new NumberOfLinesCalculator(_MaxLines);
-            var loc = lineCalculator.Calculate(method);
+            var loc = lineCalculator.Calculate(method, null);
 
             Assert.That(loc.Result, Is.InRange(1, 4));
         }
@@ -34,7 +34,7 @@ namespace Driven.Metrics.Tests.Core.Metrics
         {
             var method = _assemblySearcher.FindMethod("Second");
             var lineCalculator = new NumberOfLinesCalculator(_MaxLines);
-            var loc = lineCalculator.Calculate(method);
+            var loc = lineCalculator.Calculate(method, null);
 
             Assert.That(loc.Result, Is.InRange(2,6));
         }
@@ -44,7 +44,7 @@ namespace Driven.Metrics.Tests.Core.Metrics
         {
             var method = _assemblySearcher.FindMethod("Third");
             var lineCalculator = new NumberOfLinesCalculator(_MaxLines);
-            var loc = lineCalculator.Calculate(method);
+            var loc = lineCalculator.Calculate(method, null);
 
             Assert.That(loc.Result, Is.InRange(4, 6));
         }
@@ -54,7 +54,7 @@ namespace Driven.Metrics.Tests.Core.Metrics
         {
             var method = _assemblySearcher.FindMethod("Fourth");
             var lineCalculator = new NumberOfLinesCalculator(_MaxLines);
-            var loc = lineCalculator.Calculate(method);
+            var loc = lineCalculator.Calculate(method, null);
 
             Assert.That(loc.Result, Is.InRange(11, 19));
         }

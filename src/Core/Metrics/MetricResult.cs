@@ -21,7 +21,7 @@ namespace Driven.Metrics.Metrics
     {
         public string Name {get; private set;}
         public IList<MethodResult> MethodResults {get; private set;}
-        public int ClassResult;
+        public float res;
 
 
         public ClassResult(string name, IList<MethodResult> methodResults)
@@ -30,10 +30,10 @@ namespace Driven.Metrics.Metrics
             MethodResults = methodResults; 
         }
 
-        public ClassResult(string name, int result)
+        public ClassResult(string name, float result)
         {
             Name = name;
-            ClassResult = result;
+            res = result;
         }
 		
     }

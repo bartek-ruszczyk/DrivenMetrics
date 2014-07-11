@@ -17,7 +17,7 @@ namespace Driven.Metrics.metrics
             MaxPassValue = maxPassValue;
         }
 
-        public MethodResult Calculate(MethodDefinition methodDefinition)
+        public MethodResult Calculate(MethodDefinition methodDefinition, TypeDefinition type)
         {
             int cc = 1;
 
@@ -67,7 +67,7 @@ namespace Driven.Metrics.metrics
 
                 foreach (MethodDefinition method in typeDefinition.Methods.WithBodys())
                 {
-                    var methodResult = Calculate(method);
+                    var methodResult = Calculate(method, typeDefinition);
                     results.Add(methodResult);
                 }
 

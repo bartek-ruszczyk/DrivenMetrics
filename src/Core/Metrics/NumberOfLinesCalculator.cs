@@ -27,7 +27,7 @@ namespace Driven.Metrics.metrics
                
                foreach (MethodDefinition method in typeDefinition.Methods.WithBodys())
                {
-                   var methodResult = Calculate(method);
+                   var methodResult = Calculate(method, typeDefinition);
                    results.Add(methodResult);
                }
 
@@ -40,7 +40,7 @@ namespace Driven.Metrics.metrics
            return new MetricResult("Number Of Lines Of Code", classResults);
        }
 
-       public MethodResult Calculate(MethodDefinition methodDefinition)
+       public MethodResult Calculate(MethodDefinition methodDefinition, TypeDefinition type)
         {
             _lineNumberCounted = new List<int>();
 

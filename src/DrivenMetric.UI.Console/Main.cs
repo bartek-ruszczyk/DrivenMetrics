@@ -24,7 +24,7 @@ namespace Driven.Metric.UI.Console
                                             (int v) => consoleArgument.Metrics.Add(new NumberOfLinesCalculator(v))
                                             },
                                          { "dit=", "Calculate Depth of Inheritance Metric",
-                                            (int v) => consoleArgument.Metrics.Add(new DepthOfInheritance())
+                                            (int v) => consoleArgument.Metrics.Add(new DepthOfInheritance(v))
                                             },
                                         {"rAll=", "Generate report for all methods",v =>
                                                                                        {

@@ -104,7 +104,7 @@ namespace Driven.Metrics.metrics
             return new MethodResult(friendlyName, coupling, pass);
         }
 
-        public MetricResult Claculate(IEnumerable<TypeDefinition> types)
+        public MetricResult Calculate(IEnumerable<TypeDefinition> types)
         {
             var classResults = new List<ClassResult>();
             assembly_types = types;

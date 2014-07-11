@@ -25,7 +25,7 @@ namespace Driven.Metrics.Tests.Core.Metrics
             var method = _assemblySearcher.FindMethod("First");
             
             var cyclomicComplextityCalculator = new ILCyclomicComplextityCalculator(_MaxCC);
-            var cc = cyclomicComplextityCalculator.Calculate(method);
+            var cc = cyclomicComplextityCalculator.Calculate(method, null);
             
             Assert.That(cc.Result, Is.EqualTo(1));
         }
@@ -37,7 +37,7 @@ namespace Driven.Metrics.Tests.Core.Metrics
             var method = _assemblySearcher.FindMethod("Second");
 
             var cyclomicComplextityCalculator = new ILCyclomicComplextityCalculator(_MaxCC);
-            var cc = cyclomicComplextityCalculator.Calculate(method);
+            var cc = cyclomicComplextityCalculator.Calculate(method, null);
 
             Assert.That(cc.Result, Is.EqualTo(3));
         }
@@ -48,7 +48,7 @@ namespace Driven.Metrics.Tests.Core.Metrics
             var method = _assemblySearcher.FindMethod("Third");
 
             var cyclomicComplextityCalculator = new ILCyclomicComplextityCalculator(_MaxCC);
-            var cc = cyclomicComplextityCalculator.Calculate(method);
+            var cc = cyclomicComplextityCalculator.Calculate(method, null);
 
             Assert.That(cc.Result, Is.InRange(3, 7)); // actual 3
         }
@@ -59,7 +59,7 @@ namespace Driven.Metrics.Tests.Core.Metrics
             var method = _assemblySearcher.FindMethod("Fourth");
 
             var cyclomicComplextityCalculator = new ILCyclomicComplextityCalculator(_MaxCC);
-            var cc = cyclomicComplextityCalculator.Calculate(method);
+            var cc = cyclomicComplextityCalculator.Calculate(method, null);
             
             Assert.That(cc.Result, Is.InRange(5,10)); //actual 5
         }

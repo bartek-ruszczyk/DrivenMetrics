@@ -1,34 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using Driven.Metrics.Metrics;
-using Mono.Cecil.Extensions;
+using System.Linq;
+using System.Text;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Driven.Metrics.Metrics;
 
 namespace Driven.Metrics.metrics
 {
-    public class DepthOfInheritance : IMetricCalculator
+    public class NumberOfChildren : IMetricCalculator
     {
-      public int MaxPassValue {get; private set;}
+        public int MaxPassValue {get; private set;}
 
-      public DepthOfInheritance(int value)
+        public NumberOfChildren(int value)
        {
            MaxPassValue = value;
        }
          
-        private int getDepth(TypeDefinition typeDef)
+        private int CountChildrenForType(IEnumerable<TypeDefinition> types, TypeDefinition typeDef)
         {
-            int depth = 0;
-            TypeDefinition basetype = typeDef.BaseType as TypeDefinition;
+            int count = 0;
 
-            while (basetype != null && basetype.Name != "Object")
+            foreach (TypeDefinition other_typ in types)
             {
-                depth++;
-                basetype = basetype.BaseType as TypeDefinition;
-            }
-            return depth;
+                if (other_typ.BaseType.Name == typeDef.Name)
+                {
+                    count++;                    
+                }
+            }  
+           
+            return count;
         }
-
 
         public MetricResult Calculate(IEnumerable<TypeDefinition> types)
         {
@@ -37,19 +39,15 @@ namespace Driven.Metrics.metrics
 
             foreach (TypeDefinition typeDefinition in types)
             {
-                result = getDepth(typeDefinition);
+                result = CountChildrenForType(types, typeDefinition);
                 classResults.Add(new ClassResult(typeDefinition.Name, result));
             }
-
-            return new MetricResult("Depth Of Inheritance", classResults);
+            return new MetricResult("Number of Children", classResults);
         }
 
         public MethodResult Calculate(MethodDefinition methodDefinition, TypeDefinition type)
         {
             throw new NotImplementedException();
         }
-        
     }
-
-
 }
