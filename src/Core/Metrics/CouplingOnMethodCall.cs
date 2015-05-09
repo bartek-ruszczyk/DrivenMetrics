@@ -9,7 +9,7 @@ using Mono.Cecil.Extensions;
 
 namespace Driven.Metrics.metrics
 {
-    class CouplingOnMethodCall : IMetricCalculator
+    public class CouplingOnMethodCall : IMetricCalculator
     {
         private IEnumerable<TypeDefinition> assembly_types;
         

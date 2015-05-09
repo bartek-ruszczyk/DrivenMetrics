@@ -31,7 +31,7 @@ namespace Driven.Metrics
         public static void LoadAssemblyPostSharp(string assemblyLocation)
         {
             all_valid_types.Clear();
-            Domain domain = new Domain(true);
+            Domain domain = new Domain();
             module = domain.LoadAssembly(assemblyLocation, true).ManifestModule;
             foreach (var type in module.Types)
             {

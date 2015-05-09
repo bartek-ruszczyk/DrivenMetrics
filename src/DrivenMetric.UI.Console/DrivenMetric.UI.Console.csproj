@@ -9,12 +9,14 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>DrivenMetric.UI.Console</RootNamespace>
     <AssemblyName>DrivenMetric.UI.Console</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <DontImportPostSharp>True</DontImportPostSharp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -23,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -30,34 +33,30 @@
     <OutputPath>bin\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DrivenMetrics, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Core\bin\Debug\DrivenMetrics.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil, Version=0.6.8.8607, Culture=neutral, PublicKeyToken=c04d82a8546dde85, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Core\bin\Debug\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Extensions, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Core\bin\Debug\Mono.Cecil.Extensions.dll</HintPath>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\..\lib\Mono\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil.Mdb">
-      <HintPath>..\Core\bin\Debug\Mono.Cecil.Mdb.dll</HintPath>
+      <HintPath>..\..\lib\Mono\Mono.Cecil.Mdb.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil.Pdb">
-      <HintPath>..\Core\bin\Debug\Mono.Cecil.Pdb.dll</HintPath>
+      <HintPath>..\..\lib\Mono\Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp">
-      <HintPath>..\Core\bin\Debug\PostSharp.dll</HintPath>
+    <Reference Include="PostSharp, Version=4.1.13.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.4.1.13\lib\net35-client\PostSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="PostSharp.Sdk">
-      <HintPath>..\Core\bin\Debug\PostSharp.Sdk.dll</HintPath>
+    <Reference Include="PostSharp.Common, Version=4.1.13.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Sdk.4.1.13\lib\net40\PostSharp.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="PostSharp.Sdk.XmlSerializers">
-      <HintPath>..\Core\bin\Debug\PostSharp.Sdk.XmlSerializers.dll</HintPath>
+    <Reference Include="PostSharp.Sdk, Version=4.1.13.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\packages\PostSharp.Sdk.4.1.13\lib\net40\PostSharp.Sdk.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -69,5 +68,24 @@
     <Compile Include="ConsoleArguments.cs" />
     <Compile Include="..\CommonAssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\DrivenMetrics.csproj">
+      <Project>{e25161e9-6def-400d-9882-b99d8a7c36c8}</Project>
+      <Name>DrivenMetrics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mono.Cecil.Extensions\Mono.Cecil.Extensions.csproj">
+      <Project>{2d970fbc-977c-4b5e-b347-2df0f92e3bec}</Project>
+      <Name>Mono.Cecil.Extensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\PostSharp.4.1.13\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.4.1.13\tools\PostSharp.targets')" />
+  <Target Name="EnsurePostSharpImported" BeforeTargets="BeforeBuild" Condition="'$(PostSharp30Imported)' == ''">
+    <Error Condition="!Exists('..\packages\PostSharp.4.1.13\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
+    <Error Condition="Exists('..\packages\PostSharp.4.1.13\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
+  </Target>
 </Project>
