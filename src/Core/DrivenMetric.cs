@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using Driven.Metrics.Interfaces;
-using Mono.Cecil;
-using Driven.Metrics.Reporting;
 using Driven.Metrics.metrics;
 using Driven.Metrics.Metrics;
+using Driven.Metrics.Reporting;
+using Mono.Cecil;
 using System;
+using System.Collections.Generic;
 
 namespace Driven.Metrics
 {
@@ -13,13 +13,15 @@ namespace Driven.Metrics
         public readonly IAssemblySearcher _assemblySearcher;
         public readonly IReport Report;
         public readonly IMetricCalculator[] _metricCalculators;
+        public readonly IEnumerable<IAOPMetricCalculator> AopMetrics;
 
-        public DrivenMetrics(IAssemblySearcher methodFinder, IReport report, IMetricCalculator[] metricCalculators )
+        public DrivenMetrics(IAssemblySearcher methodFinder, IReport report, IMetricCalculator[] metricCalculators,
+            IEnumerable<IAOPMetricCalculator> aopMetrics)
         {
-            
             _assemblySearcher = methodFinder;
             Report = report;
             _metricCalculators = metricCalculators;
+            AopMetrics = aopMetrics;
         }
 
         /*    public void CalculateLinesOfCode()
@@ -64,6 +66,12 @@ namespace Driven.Metrics
                 metricResults.Add(result);
             }
 
+            foreach (IAOPMetricCalculator aopMetric in AopMetrics)
+            {
+                MetricResult result = aopMetric.Calculate(AssemblyLoader.all_valid_types);
+                metricResults.Add(result);
+            }
+
             Report.Generate(metricResults);
         }
         
@@ -92,12 +100,12 @@ namespace Driven.Metrics
                 var numberOfLines = new NumberOfLinesCalculator(20);
                 var cyclomicCompexity = new ILCyclomicComplextityCalculator(20);
 
-                var drivenMetric = new DrivenMetrics(methodFinder, htmlReport, new IMetricCalculator[] { numberOfLines, cyclomicCompexity });
+                var drivenMetric = new DrivenMetrics(methodFinder, htmlReport, new IMetricCalculator[] { numberOfLines, cyclomicCompexity }, new List<IAOPMetricCalculator>());
 
                 return drivenMetric;
             }
 			
-			public DrivenMetrics Create(string[] assemblyNames, IMetricCalculator[] metrics, string reportFilePath, IReport htmlReport)
+			public DrivenMetrics Create(string[] assemblyNames, IMetricCalculator[] metrics, IEnumerable<IAOPMetricCalculator> aopMetrics, string reportFilePath, IReport htmlReport)
 			{
 				 var assemblies = new List<AssemblyDefinition>();
 
@@ -106,10 +114,11 @@ namespace Driven.Metrics
                     var assemblyLoader = new AssemblyLoader(assemblyName);
                     var assembly = assemblyLoader.Load();    
                     assemblies.Add(assembly);
+                    //AssemblyLoader.LoadAssemblyPostSharp(assemblyName);
                 }
 
                 var methodFinder = new AssemblySearcher(assemblies.ToArray());
-				var drivenMetric = new DrivenMetrics(methodFinder, htmlReport, metrics);
+				var drivenMetric = new DrivenMetrics(methodFinder, htmlReport, metrics, aopMetrics);
 
                 return drivenMetric;	
 				

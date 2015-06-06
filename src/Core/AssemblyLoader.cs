@@ -2,7 +2,10 @@ using Driven.Metrics.Interfaces;
 using Mono.Cecil;
 
 using System.Collections.Generic;
-
+using System.Globalization;
+using System.Reflection;
+using System.Threading;
+using PostSharp.Sdk.Binary;
 using PostSharp.Sdk.CodeModel;
 using PostSharp.Sdk.Extensibility.Licensing;
 
@@ -31,8 +34,14 @@ namespace Driven.Metrics
         public static void LoadAssemblyPostSharp(string assemblyLocation)
         {
             all_valid_types.Clear();
-            Domain domain = new Domain();
-            module = domain.LoadAssembly(assemblyLocation, true).ManifestModule;
+            Domain domain = new Domain(ReflectionLoadOptions.All, true);
+            //AssemblyDefinition definition = AssemblyFactory.GetAssembly(assemblyLocation);
+            //Assembly assembly = AssemblyFactory.CreateReflectionAssembly(definition);
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            module = domain.LoadAssembly(assemblyLocation, LoadAssemblyOptions.None).ManifestModule;
             foreach (var type in module.Types)
             {
                 if (!type.Name.Contains("Settings") && !type.Name.Contains("Resources") && !type.Name.Contains("DataSet")

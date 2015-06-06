@@ -21,6 +21,9 @@ namespace Driven.Metrics.Metrics
     {
         public string Name {get; private set;}
         public IList<MethodResult> MethodResults {get; private set;}
+
+        public float Result { get { return res; } }
+
         public float res;
 
 

@@ -10,6 +10,7 @@ namespace Driven.Metric.UI.Console
         {
             AssemblyNames = new List<string>();
             Metrics = new List<IMetricCalculator>();
+            AopMetrics = new List<IAOPMetricCalculator>();
         }
 	        
         public bool Help {get;set;}
@@ -21,5 +22,7 @@ namespace Driven.Metric.UI.Console
         public ReportType ReportType {get; set;}
 			
         public List<IMetricCalculator> Metrics { get; set; }
+
+        public List<IAOPMetricCalculator> AopMetrics { get; set; } 
     }
 }

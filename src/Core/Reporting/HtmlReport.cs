@@ -102,7 +102,7 @@ namespace Driven.Metrics.Reporting
             Contents += endOfTable();
         }
 
-        private void createTableHeader(MetricResult result)
+        protected virtual void createTableHeader(MetricResult result)
         {
             Contents += "<h2>" + result.Name + "</h2>";
             Contents += @"<table border=""1"">

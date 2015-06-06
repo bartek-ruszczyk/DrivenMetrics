@@ -24,8 +24,23 @@ namespace Driven.Metric.UI.Console
                                             (int v) => consoleArgument.Metrics.Add(new NumberOfLinesCalculator(v))
                                             },
                                          { "dit=", "Calculate Depth of Inheritance Metric",
-                                            (int v) => consoleArgument.Metrics.Add(new DepthOfInheritance(v))
+                                             (int v) => consoleArgument.Metrics.Add(new DepthOfInheritance(v))
                                             },
+                                        {
+                                          "comc=", "Coupling on method call", (int v) => consoleArgument.Metrics.Add(new CouplingOnMethodCall(v))  
+                                        },
+                                                                                {
+                                          "acd=", "Aspect Crosscutting Degree", (int v) => consoleArgument.AopMetrics.Add(new AspectCrosscuttingDegree())  
+                                        },
+                                        {
+                                          "anum=", "Aspect number", (int v) => consoleArgument.AopMetrics.Add(new AspectNumber())  
+                                        },
+                                        {
+                                          "cbm=", "Coupling between modules", (int v) => consoleArgument.Metrics.Add(new CouplingBetweenModules(v))  
+                                        },
+                                        {
+                                          "loch=", "Lack of cohesion", (int v) => consoleArgument.Metrics.Add(new LackOfCohesionInOperations(v))  
+                                        },
                                         {"rAll=", "Generate report for all methods",v =>
                                                                                        {
                                                                                            consoleArgument.
@@ -99,10 +114,12 @@ namespace Driven.Metric.UI.Console
         {
             var reportFactory = new ReportFactory();
 
-            var htmlReport = reportFactory.ResolveReport(argument.ReportType, argument.ReportName);
+            //var htmlReport = reportFactory.ResolveReport(argument.ReportType, argument.ReportName);
+            var htmlReport = new HtmlWithSumsReport(new FileWriter(), argument.ReportName);
 
             return new DrivenMetrics.Factory().Create(argument.AssemblyNames.ToArray(),
                                                      argument.Metrics.ToArray(),
+                                                     argument.AopMetrics,
                                                      argument.ReportName, htmlReport);
         }
     }
