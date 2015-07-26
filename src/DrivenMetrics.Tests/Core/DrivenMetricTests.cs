@@ -66,7 +66,7 @@ namespace Driven.Metrics.Tests.Core
 
             //report.Expect(x => x.Generate(metricResults, "")).IgnoreArguments();
             
-            var dMetric = new DrivenMetrics(assemblySearcher, report, new[] {metric1, metric2});
+            var dMetric = new DrivenMetrics(assemblySearcher, report, new[] {metric1, metric2}, null);
             dMetric.RunAllMetricsAndGenerateReport();
 
             assemblySearcher.AssertWasCalled(x => x.GetAllTypes(), options => options

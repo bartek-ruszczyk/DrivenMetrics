@@ -15,20 +15,15 @@ namespace Driven.Metrics.Reporting
 
         protected override void inputResults(MetricResult result)
         {
-            float metricResultSum = 0;
-
+            float metricResult = 0;
             foreach (ClassResult classResult in result.ClassResults)
             {
-                float classResultSum = classResult.MethodResults == null
-                    ? classResult.Result
-                    : classResult.MethodResults.Sum(methodResult => methodResult.Result);
-
-                metricResultSum += classResultSum;
-                Contents += string.Format(RowFormat, HttpUtility.HtmlEncode(classResult.Name),
-                    classResultSum);
+                metricResult += classResult.Result;
+                Contents += string.Format(RowFormat, HttpUtility.HtmlEncode(classResult.Name), classResult.Result);
             }
 
-            Contents += string.Format("<tr><td><b>{0}</b></td><td><b>{1}</b></td></tr>", HttpUtility.HtmlEncode(result.Name), metricResultSum);
+            Contents += string.Format("<tr><td><b>{0}</b></td><td><b>{1}</b></td></tr>",
+                HttpUtility.HtmlEncode(result.Name), metricResult);
         }
 
         protected override void createTableHeader(MetricResult result)

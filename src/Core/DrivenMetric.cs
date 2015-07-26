@@ -120,8 +120,7 @@ namespace Driven.Metrics
                 var methodFinder = new AssemblySearcher(assemblies.ToArray());
 				var drivenMetric = new DrivenMetrics(methodFinder, htmlReport, metrics, aopMetrics);
 
-                return drivenMetric;	
-				
+                return drivenMetric;
 			}
         }
     }

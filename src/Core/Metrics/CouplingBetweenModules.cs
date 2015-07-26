@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Driven.Metrics.Metrics;
 using System.Text;
 using Mono.Cecil;
@@ -15,6 +16,8 @@ namespace Driven.Metrics.metrics
     {
         public int MaxPassValue { get; private set; }
         private IEnumerable<TypeDefinition> assembly_types;
+        private ISet<string> coupledTypes;
+        private float coupling;
 
         public CouplingBetweenModules(int maxValue)
         {
@@ -62,8 +65,6 @@ namespace Driven.Metrics.metrics
 
         public MethodResult Calculate(MethodDefinition methodDefinition, TypeDefinition type) 
         {
-            var lst = new List<string>();  
-
             if (methodDefinition.Body != null)
             {
                 foreach (Instruction ins in methodDefinition.Body.Instructions)
@@ -75,9 +76,10 @@ namespace Driven.Metrics.metrics
                             //do not count fields called from aspects
                                             && isFieldForCounting(ins))
                         {
-                            if (!lst.Contains(field.DeclaringType.Name))
+                            if (!coupledTypes.Contains(field.DeclaringType.Name))
                             {
-                                lst.Add(field.DeclaringType.Name);
+                                coupledTypes.Add(field.DeclaringType.Name);
+                                coupling++;
                             }
                         }
                     }                    
@@ -87,21 +89,21 @@ namespace Driven.Metrics.metrics
                         {
                             MethodReference methodCall = ins.Operand as MethodReference;
                             //methods called from the same class are not counted
-                            if ((!lst.Contains(methodCall.GetOriginalMethod().DeclaringType.Name)) && (methodCall.DeclaringType.Name != type.Name))
+                            if ((!coupledTypes.Contains(methodCall.GetOriginalMethod().DeclaringType.Name)) && (methodCall.DeclaringType.Name != type.Name))
                             {
-                                lst.Add(methodCall.GetOriginalMethod().DeclaringType.Name);
-
+                                coupledTypes.Add(methodCall.GetOriginalMethod().DeclaringType.Name);
+                                coupling++;
                             }
                         }
                     }
                 }
             }
 
-            var coupling = lst.Count;
-            var pass = isLessThanRecommended(coupling);
+            // method result are not important, we count coupling for a whole type
+            var pass = isLessThanRecommended(0);
 
             var friendlyName = methodDefinition.FriendlyName();
-            return new MethodResult(friendlyName, coupling, pass);
+            return new MethodResult(friendlyName, 0, pass);
         }
 
         public MetricResult Calculate(IEnumerable<TypeDefinition> types)
@@ -111,16 +113,15 @@ namespace Driven.Metrics.metrics
                    
             foreach (TypeDefinition typeDefinition in types)
             {
-                var results = new List<MethodResult>();    
+                coupledTypes = new HashSet<string>();
+                coupling = 0;
 
                 foreach (MethodDefinition method in typeDefinition.Methods.WithBodys())
                 {
-                    var methodResult = Calculate(method, typeDefinition);
-                    results.Add(methodResult);                    
+                    Calculate(method, typeDefinition);
                 }
-                if (results.Count == 0)
-                    continue;
-                classResults.Add(new ClassResult(typeDefinition.Name, results));
+                
+                classResults.Add(new ClassResult(typeDefinition.Name, coupling));
             }
             return new MetricResult("Coupling Between Modules", classResults);
         }
